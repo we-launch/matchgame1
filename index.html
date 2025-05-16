@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Team Match Game</title>
+  <title>Team Match-Up</title>
   <style>
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(10px); }
@@ -12,7 +12,7 @@
 
     body {
       font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-      background: linear-gradient(120deg, #eae6f8, #f2f0fb);
+      background: linear-gradient(120deg, #fff8e1, #fdf4db);
       padding: 20px;
       max-width: 700px;
       margin: auto;
@@ -23,7 +23,7 @@
 
     h1 {
       text-align: center;
-      color: #7a6bb1;
+      color: #d7ad39;
       margin-bottom: 30px;
       animation: fadeIn 1.5s ease-in-out;
     }
@@ -32,7 +32,7 @@
       background-color: #fff;
       padding: 15px;
       margin-bottom: 20px;
-      border-left: 5px solid #a6a1d4;
+      border-left: 5px solid #d7ad39;
       border-radius: 8px;
       animation: fadeIn 0.6s ease-in-out;
     }
@@ -52,7 +52,7 @@
     }
 
     button {
-      background-color: #7a6bb1;
+      background-color: #d7ad39;
       color: white;
       padding: 12px 24px;
       border: none;
@@ -63,21 +63,21 @@
     }
 
     button:hover {
-      background-color: #6b5da3;
+      background-color: #b78f2e;
     }
 
     #result {
       margin-top: 30px;
       padding: 25px;
-      border: 2px dashed #7a6bb1;
-      background-color: #f5f4fb;
+      border: 2px dashed #d7ad39;
+      background-color: #fffdf4;
       border-radius: 10px;
       text-align: center;
       animation: fadeIn 1s ease-in-out;
     }
 
     #result h2, #result h3 {
-      color: #5f5295;
+      color: #a17812;
     }
 
     .icon {
@@ -87,7 +87,7 @@
   </style>
 </head>
 <body>
-  <h1>🎯 Who's Your Ideal Match-Up?</h1>
+  <h1>🎯 Team Match-Up</h1>
   <form id="quizForm">
     <label>Name: <input type="text" id="userName" required /></label>
     <div id="questions"></div>
