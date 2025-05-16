@@ -3,23 +3,99 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Wedding Match Game</title>
+  <title>Team Match Game</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
-    h1 { text-align: center; }
-    .question { margin-bottom: 20px; }
-    button { padding: 10px 20px; margin-top: 20px; }
-    #result { margin-top: 30px; padding: 20px; border: 1px solid #ccc; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(120deg, #eae6f8, #f2f0fb);
+      padding: 20px;
+      max-width: 700px;
+      margin: auto;
+      border-radius: 10px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+      animation: fadeIn 1s ease-in;
+    }
+
+    h1 {
+      text-align: center;
+      color: #7a6bb1;
+      margin-bottom: 30px;
+      animation: fadeIn 1.5s ease-in-out;
+    }
+
+    .question {
+      background-color: #fff;
+      padding: 15px;
+      margin-bottom: 20px;
+      border-left: 5px solid #a6a1d4;
+      border-radius: 8px;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 500;
+    }
+
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+
+    button {
+      background-color: #7a6bb1;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background-color 0.3s;
+    }
+
+    button:hover {
+      background-color: #6b5da3;
+    }
+
+    #result {
+      margin-top: 30px;
+      padding: 25px;
+      border: 2px dashed #7a6bb1;
+      background-color: #f5f4fb;
+      border-radius: 10px;
+      text-align: center;
+      animation: fadeIn 1s ease-in-out;
+    }
+
+    #result h2, #result h3 {
+      color: #5f5295;
+    }
+
+    .icon {
+      font-size: 30px;
+      margin-right: 10px;
+    }
   </style>
 </head>
 <body>
-  <h1>Find Your Wedding Match!</h1>
+  <h1>🎯 Who's Your Match?</h1>
   <form id="quizForm">
-    <label>Name: <input type="text" id="userName" required /></label><br /><br />
+    <label>Name: <input type="text" id="userName" required /></label>
     <div id="questions"></div>
-    <button type="submit">Find My Match</button>
+    <button type="submit">🔍 Find My Match</button>
   </form>
   <div id="result"></div>
+
+  <audio id="matchSound" src="https://cdn.pixabay.com/download/audio/2021/08/04/audio_ef315f64ca.mp3?filename=success-fanfare-trumpets-6185.mp3"></audio>
 
   <script>
     const questions = [
@@ -32,7 +108,7 @@
       "Your spirit animal:",
       "Choose a drink:",
       "Favorite social activity:",
-      "What's your love language?"
+      "What’s your hangout style?"
     ];
 
     const options = [
@@ -43,39 +119,39 @@
       ["Cooking", "Drawing", "Dancing", "Hiking"],
       ["Pop", "Rock", "EDM", "Jazz"],
       ["Cat", "Dog", "Owl", "Sloth"],
-      ["Cocktail", "Beer", "Wine", "Mocktail"],
+      ["Cocktail", "Beer", "Water", "Soda"],
       ["Karaoke", "Board games", "Dancing", "Movie night"],
-      ["Words", "Time", "Gifts", "Touch"]
+      ["Chill vibes", "Big energy", "Deep convos", "Let’s play"]
     ];
 
     const matchProfiles = [
       {
         name: "Jessie",
         nickname: "The Meme Queen",
-        role: "Bridesmaid",
+        role: "Teammate",
         answers: [2, 2, 0, 0, 2, 2, 0, 0, 2, 0],
-        description: "Loves a good TikTok, quick with the puns, and always brings snacks."
+        description: "Master of gifs, lover of silly trivia nights and snack raids."
       },
       {
         name: "Kyle",
         nickname: "The Grillmaster Philosopher",
-        role: "Groomsman",
+        role: "Teammate",
         answers: [1, 1, 3, 0, 0, 1, 1, 1, 0, 1],
-        description: "Spouts Aristotle quotes while flipping burgers."
+        description: "Quotes Aristotle over burgers and loves deep talks at game night."
       },
       {
         name: "Lena",
-        nickname: "The Romantic DJ",
-        role: "Bridesmaid",
+        nickname: "The Casual DJ",
+        role: "Teammate",
         answers: [0, 0, 0, 2, 2, 0, 3, 2, 3, 3],
-        description: "Believes in love at first sound...especially when it's a slow jam."
+        description: "Curates the vibe and picks the best playlists for any chill hangout."
       },
       {
         name: "Rick",
-        nickname: "The Conspiracy Theorist DJ",
-        role: "Groomsman",
+        nickname: "The Conspiracy Gamer",
+        role: "Teammate",
         answers: [1, 3, 1, 1, 3, 1, 2, 3, 1, 1],
-        description: "Will debate aliens and drop the bass in the same breath."
+        description: "Debates alien life during Mario Kart and snack breaks."
       }
     ];
 
@@ -84,13 +160,12 @@
     questions.forEach((question, index) => {
       const div = document.createElement("div");
       div.className = "question";
-      div.innerHTML = `<strong>${question}</strong><br />`;
+      div.innerHTML = `<strong>🧠 ${question}</strong><br />`;
       options[index].forEach((opt, i) => {
         div.innerHTML += `
           <label>
             <input type="radio" name="q${index}" value="${i}" required /> ${opt}
-          </label><br />
-        `;
+          </label>`;
       });
       questionsContainer.appendChild(div);
     });
@@ -130,12 +205,13 @@
 
     function showResult(profile) {
       const name = document.getElementById("userName").value;
+      document.getElementById("matchSound").play();
       document.getElementById("result").innerHTML = `
-        <h2>Hi ${name}!</h2>
-        <p>Your best match is:</p>
-        <h3>${profile.name} - "${profile.nickname}" (${profile.role})</h3>
+        <h2>👋 Hey ${name}!</h2>
+        <p>Your vibe-aligned teammate is:</p>
+        <h3>🎯 ${profile.name} - "${profile.nickname}"</h3>
         <p>${profile.description}</p>
-        <button onclick="window.print()">Download as PDF</button>
+        <button onclick="window.print()">📄 Save as PDF</button>
       `;
     }
   </script>
