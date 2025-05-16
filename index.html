@@ -2,147 +2,142 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>💘 Matchmaker Game</title>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Wedding Match Game</title>
   <style>
-    body { font-family: Arial, sans-serif; padding: 20px; max-width: 700px; margin: auto; }
-    input, textarea, select, button {
-      width: 100%; padding: 10px; margin: 10px 0;
-    }
-    .result { background: #f0fff0; border-left: 5px solid #28a745; padding: 15px; margin-top: 20px; }
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 600px; margin: auto; }
     h1 { text-align: center; }
+    .question { margin-bottom: 20px; }
+    button { padding: 10px 20px; margin-top: 20px; }
+    #result { margin-top: 30px; padding: 20px; border: 1px solid #ccc; }
   </style>
 </head>
 <body>
+  <h1>Find Your Wedding Match!</h1>
+  <form id="quizForm">
+    <label>Name: <input type="text" id="userName" required /></label><br /><br />
+    <div id="questions"></div>
+    <button type="submit">Find My Match</button>
+  </form>
+  <div id="result"></div>
 
-<h1>💍 Groomsmen-Bridesmaids Match Game</h1>
+  <script>
+    const questions = [
+      "What's your ideal weekend?",
+      "Favorite kind of movie?",
+      "Pick a vacation:",
+      "Choose a snack:",
+      "Favorite hobby:",
+      "What type of music do you love?",
+      "Your spirit animal:",
+      "Choose a drink:",
+      "Favorite social activity:",
+      "What's your love language?"
+    ];
 
-<form onsubmit="event.preventDefault(); findBestMatch();">
-  <label>Your Name:</label>
-  <input type="text" id="name" required>
+    const options = [
+      ["Exploring a city", "Gaming", "Music fest", "Reading"],
+      ["Romantic", "Action", "Comedy", "Documentary"],
+      ["Beach", "Mountains", "Road trip", "Staycation"],
+      ["Chips", "Popcorn", "Chocolate", "Fruit"],
+      ["Cooking", "Drawing", "Dancing", "Hiking"],
+      ["Pop", "Rock", "EDM", "Jazz"],
+      ["Cat", "Dog", "Owl", "Sloth"],
+      ["Cocktail", "Beer", "Wine", "Mocktail"],
+      ["Karaoke", "Board games", "Dancing", "Movie night"],
+      ["Words", "Time", "Gifts", "Touch"]
+    ];
 
-  <label>Your Role:</label>
-  <select id="role">
-    <option value="groom">Groomsman</option>
-    <option value="bride">Bridesmaid</option>
-  </select>
-
-  <label>Enter your 10 answers (1 per line):</label>
-  <textarea id="answers" rows="12" placeholder="E.g.:
-Hiking
-Introvert
-Comedy
-Pizza
-Dogs
-Night owl
-Adventure
-Beach
-Tea
-Creative" required></textarea>
-
-  <button type="submit">🔍 Find My Match</button>
-</form>
-
-<div class="result" id="matchResult" style="display:none;"></div>
-<button onclick="exportPDF()" id="exportBtn" style="display:none;">📄 Export as PDF</button>
-
-<script>
-  const participants = {
-    groom: [
-      { name: "Captain Coolio", answers: ["gaming", "extrovert", "action", "burger", "cats", "early bird", "camping", "mountains", "coffee", "logical"] },
-      { name: "Sir Laughsalot", answers: ["stand-up", "introvert", "comedy", "popcorn", "dogs", "night owl", "hiking", "cityscape", "soda", "creative"] }
-    ],
-    bride: [
-      { name: "Lady Sparkle", answers: ["dancing", "extrovert", "romance", "ice cream", "cats", "early bird", "spa", "island", "tea", "emotional"] },
-      { name: "Duchess Drama", answers: ["acting", "introvert", "drama", "cake", "dogs", "night owl", "theater", "desert", "wine", "expressive"] }
-    ]
-  };
-
-  let matchResultData = {};
-
-  function tokenize(text) {
-    return text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
-  }
-
-  function vectorize(answers, vocab) {
-    const vec = Array(vocab.length).fill(0);
-    answers.forEach(ans => {
-      tokenize(ans).forEach(token => {
-        const i = vocab.indexOf(token);
-        if (i !== -1) vec[i]++;
-      });
-    });
-    return vec;
-  }
-
-  function cosineSimilarity(a, b) {
-    const dot = a.reduce((sum, val, i) => sum + val * b[i], 0);
-    const magA = Math.sqrt(a.reduce((sum, val) => sum + val ** 2, 0));
-    const magB = Math.sqrt(b.reduce((sum, val) => sum + val ** 2, 0));
-    return dot / (magA * magB || 1);
-  }
-
-  function findBestMatch() {
-    const name = document.getElementById("name").value.trim();
-    const role = document.getElementById("role").value;
-    const answers = document.getElementById("answers").value.trim().split("\n").map(a => a.trim()).filter(Boolean);
-
-    if (answers.length !== 10) {
-      alert("Please enter exactly 10 answers.");
-      return;
-    }
-
-    const pool = role === "groom" ? participants.bride : participants.groom;
-    const vocab = [...new Set([...answers, ...pool.flatMap(p => p.answers)].flatMap(tokenize))];
-    const userVec = vectorize(answers, vocab);
-
-    let bestMatch = null;
-    let bestScore = -1;
-
-    for (const person of pool) {
-      const theirVec = vectorize(person.answers, vocab);
-      const score = cosineSimilarity(userVec, theirVec);
-      if (score > bestScore) {
-        bestScore = score;
-        bestMatch = person;
+    const matchProfiles = [
+      {
+        name: "Jessie",
+        nickname: "The Meme Queen",
+        role: "Bridesmaid",
+        answers: [2, 2, 0, 0, 2, 2, 0, 0, 2, 0],
+        description: "Loves a good TikTok, quick with the puns, and always brings snacks."
+      },
+      {
+        name: "Kyle",
+        nickname: "The Grillmaster Philosopher",
+        role: "Groomsman",
+        answers: [1, 1, 3, 0, 0, 1, 1, 1, 0, 1],
+        description: "Spouts Aristotle quotes while flipping burgers."
+      },
+      {
+        name: "Lena",
+        nickname: "The Romantic DJ",
+        role: "Bridesmaid",
+        answers: [0, 0, 0, 2, 2, 0, 3, 2, 3, 3],
+        description: "Believes in love at first sound...especially when it's a slow jam."
+      },
+      {
+        name: "Rick",
+        nickname: "The Conspiracy Theorist DJ",
+        role: "Groomsman",
+        answers: [1, 3, 1, 1, 3, 1, 2, 3, 1, 1],
+        description: "Will debate aliens and drop the bass in the same breath."
       }
+    ];
+
+    const questionsContainer = document.getElementById("questions");
+
+    questions.forEach((question, index) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<strong>${question}</strong><br />`;
+      options[index].forEach((opt, i) => {
+        div.innerHTML += `
+          <label>
+            <input type="radio" name="q${index}" value="${i}" required /> ${opt}
+          </label><br />
+        `;
+      });
+      questionsContainer.appendChild(div);
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const userAnswers = [];
+      for (let i = 0; i < questions.length; i++) {
+        const answer = document.querySelector(`input[name='q${i}']:checked`);
+        userAnswers.push(parseInt(answer.value));
+      }
+
+      const bestMatch = findBestMatch(userAnswers);
+      showResult(bestMatch);
+    });
+
+    function cosineSimilarity(vecA, vecB) {
+      const dot = vecA.reduce((sum, val, i) => sum + val * vecB[i], 0);
+      const magA = Math.sqrt(vecA.reduce((sum, val) => sum + val * val, 0));
+      const magB = Math.sqrt(vecB.reduce((sum, val) => sum + val * val, 0));
+      return dot / (magA * magB);
     }
 
-    matchResultData = {
-      yourName: name,
-      yourRole: role === "groom" ? "Groomsman" : "Bridesmaid",
-      matchName: bestMatch.name,
-      matchRole: role === "groom" ? "Bridesmaid" : "Groomsman",
-      score: bestScore.toFixed(3)
-    };
+    function findBestMatch(userAnswers) {
+      let bestScore = -1;
+      let best = null;
+      matchProfiles.forEach(profile => {
+        const score = cosineSimilarity(userAnswers, profile.answers);
+        if (score > bestScore) {
+          bestScore = score;
+          best = profile;
+        }
+      });
+      return best;
+    }
 
-    document.getElementById("matchResult").style.display = "block";
-    document.getElementById("matchResult").innerHTML = `
-      💘 <strong>${matchResultData.yourName}</strong> (${matchResultData.yourRole}) is matched with
-      <strong>${matchResultData.matchName}</strong> (${matchResultData.matchRole})!
-      <br>Compatibility Score: <strong>${matchResultData.score}</strong>
-    `;
-
-    document.getElementById("exportBtn").style.display = "inline-block";
-  }
-
-  function exportPDF() {
-    const { jsPDF } = window.jspdf;
-    const doc = new jsPDF();
-
-    doc.setFontSize(18);
-    doc.text("💍 Wedding Match Result", 20, 30);
-
-    doc.setFontSize(14);
-    doc.text(`Your Name: ${matchResultData.yourName}`, 20, 50);
-    doc.text(`Your Role: ${matchResultData.yourRole}`, 20, 60);
-    doc.text(`Matched With: ${matchResultData.matchName}`, 20, 70);
-    doc.text(`Their Role: ${matchResultData.matchRole}`, 20, 80);
-    doc.text(`Compatibility Score: ${matchResultData.score}`, 20, 90);
-
-    doc.save("match_result.pdf");
-  }
-</script>
-
+    function showResult(profile) {
+      const name = document.getElementById("userName").value;
+      document.getElementById("result").innerHTML = `
+        <h2>Hi ${name}!</h2>
+        <p>Your best match is:</p>
+        <h3>${profile.name} - "${profile.nickname}" (${profile.role})</h3>
+        <p>${profile.description}</p>
+        <button onclick="window.print()">Download as PDF</button>
+      `;
+    }
+  </script>
 </body>
 </html>
