@@ -1,79 +1,148 @@
 <!DOCTYPE html>
-<html  >
+<html lang="en">
 <head>
-  <!-- Site made with Mobirise Website Builder v5.9.25, https://mobirise.com -->
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="generator" content="Mobirise v5.9.25, mobirise.com">
-  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1">
-  <link rel="shortcut icon" href="assets/images/logo5.png" type="image/x-icon">
-  <meta name="description" content="">
-  
-  
-  <title>Home</title>
-  <link rel="stylesheet" href="assets/web/assets/mobirise-icons/mobirise-icons.css">
-  <link rel="stylesheet" href="assets/tether/tether.min.css">
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-grid.min.css">
-  <link rel="stylesheet" href="assets/bootstrap/css/bootstrap-reboot.min.css">
-  <link rel="stylesheet" href="assets/theme/css/style.css">
-  <link rel="preload" href="https://fonts.googleapis.com/css?family=Josefin+Sans:100,200,300,400,500,600,700,100i,200i,300i,400i,500i,600i,700i&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Josefin+Sans:100,200,300,400,500,600,700,100i,200i,300i,400i,500i,600i,700i&display=swap"></noscript>
-  <link rel="preload" href="https://fonts.googleapis.com/css?family=Cormorant+Upright:300,400,500,600,700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
-  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Cormorant+Upright:300,400,500,600,700&display=swap"></noscript>
-  <link rel="preload" as="style" href="assets/mobirise/css/mbr-additional.css?v=6gqsCx"><link rel="stylesheet" href="assets/mobirise/css/mbr-additional.css?v=6gqsCx" type="text/css">
-
-  
-  
-  
+  <meta charset="UTF-8" />
+  <title>💘 Matchmaker Game</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; max-width: 700px; margin: auto; }
+    input, textarea, select, button {
+      width: 100%; padding: 10px; margin: 10px 0;
+    }
+    .result { background: #f0fff0; border-left: 5px solid #28a745; padding: 15px; margin-top: 20px; }
+    h1 { text-align: center; }
+  </style>
 </head>
 <body>
-  
-  <section class="header1 cid-uLkC7iArT6 mbr-fullscreen mbr-parallax-background" id="header1-0">
 
-    
+<h1>💍 Groomsmen-Bridesmaids Match Game</h1>
 
-    
+<form onsubmit="event.preventDefault(); findBestMatch();">
+  <label>Your Name:</label>
+  <input type="text" id="name" required>
 
-    <div class="container">
-        <div class="row">
-            <div class="col-lg-8 col-md-10 ml-auto">
-                    <h3 class="mbr-section-subtitle align-center mbr-light pb-3 mbr-fonts-style display-5">
-                        Compatible with Mobirise4
-                    </h3>
-                    <h1 class="mbr-section-title align-center mbr-bold mbr-fonts-style display-1">
-                        RestaurantM4 theme
-                    </h1>
-                    <div class="py-3 ornament align-center">
-                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 133 20" height="20" width="150" fill="#f9e2af">
-                            <g><path d="M127.18,6.19C121-.05,109.94-.24,101.84.1,90.84.56,80,3.3,69.32,5.77c-8,1.86-16,3.63-24,5.72-9.21,2.41-18.6,4.72-28.14,5.19-4.1.2-8.48,0-12.16-2a6.6,6.6,0,0,1-2.7-9A5.46,5.46,0,0,1,7.07,2.77c4-.22,6.73,8.39-.08,4.58a.49.49,0,0,0-.49.84c4.88,3,10.8,0,5.4-4.91C7.6-.63.4,2.06,0,8-1,24,28.25,17,36.29,15.24,53.74,11.37,70.9,6.44,88.53,3.33c11.1-2,24.75-3.54,35.06,2.19a16,16,0,0,1,6.86,8.85c1.29,4.31-4.35,4.2-7,3.52-4.84-1.26-2.42-8,1.22-3,.61.83,2,0,1.4-.82-2.15-2.93-6.71-4.9-7.12.35s8.36,7.24,11.72,4.47C135,15.32,129.91,9,127.18,6.19Z"></path></g>
-                        </svg>
-                    </div>
-                    <p class="mbr-text align-center pb-3 mbr-fonts-style display-7">
-                       Welcome to our restaurant
-                    </p>
-            </div>
-        </div>
-    </div>
+  <label>Your Role:</label>
+  <select id="role">
+    <option value="groom">Groomsman</option>
+    <option value="bride">Bridesmaid</option>
+  </select>
 
-    <div class="mbr-arrow hidden-sm-down" aria-hidden="true">
-        <!-- <span mbr-text class="arrow-text">Scroll Down</span> -->
-        <a href="#next">
-            <i class="mbri-arrow-down mbr-iconfont"></i>
-        </a>
-    </div>
-</section>
+  <label>Enter your 10 answers (1 per line):</label>
+  <textarea id="answers" rows="12" placeholder="E.g.:
+Hiking
+Introvert
+Comedy
+Pizza
+Dogs
+Night owl
+Adventure
+Beach
+Tea
+Creative" required></textarea>
 
+  <button type="submit">🔍 Find My Match</button>
+</form>
 
-<script src="assets/web/assets/jquery/jquery.min.js"></script>
-  <script src="assets/popper/popper.min.js"></script>
-  <script src="assets/tether/tether.min.js"></script>
-  <script src="assets/bootstrap/js/bootstrap.min.js"></script>
-  <script src="assets/smoothscroll/smooth-scroll.js"></script>
-  <script src="assets/parallax/jarallax.min.js"></script>
-  <script src="assets/theme/js/script.js"></script>
-  
-  
-  
+<div class="result" id="matchResult" style="display:none;"></div>
+<button onclick="exportPDF()" id="exportBtn" style="display:none;">📄 Export as PDF</button>
+
+<script>
+  const participants = {
+    groom: [
+      { name: "Captain Coolio", answers: ["gaming", "extrovert", "action", "burger", "cats", "early bird", "camping", "mountains", "coffee", "logical"] },
+      { name: "Sir Laughsalot", answers: ["stand-up", "introvert", "comedy", "popcorn", "dogs", "night owl", "hiking", "cityscape", "soda", "creative"] }
+    ],
+    bride: [
+      { name: "Lady Sparkle", answers: ["dancing", "extrovert", "romance", "ice cream", "cats", "early bird", "spa", "island", "tea", "emotional"] },
+      { name: "Duchess Drama", answers: ["acting", "introvert", "drama", "cake", "dogs", "night owl", "theater", "desert", "wine", "expressive"] }
+    ]
+  };
+
+  let matchResultData = {};
+
+  function tokenize(text) {
+    return text.toLowerCase().replace(/[^a-z0-9\s]/g, '').split(/\s+/).filter(Boolean);
+  }
+
+  function vectorize(answers, vocab) {
+    const vec = Array(vocab.length).fill(0);
+    answers.forEach(ans => {
+      tokenize(ans).forEach(token => {
+        const i = vocab.indexOf(token);
+        if (i !== -1) vec[i]++;
+      });
+    });
+    return vec;
+  }
+
+  function cosineSimilarity(a, b) {
+    const dot = a.reduce((sum, val, i) => sum + val * b[i], 0);
+    const magA = Math.sqrt(a.reduce((sum, val) => sum + val ** 2, 0));
+    const magB = Math.sqrt(b.reduce((sum, val) => sum + val ** 2, 0));
+    return dot / (magA * magB || 1);
+  }
+
+  function findBestMatch() {
+    const name = document.getElementById("name").value.trim();
+    const role = document.getElementById("role").value;
+    const answers = document.getElementById("answers").value.trim().split("\n").map(a => a.trim()).filter(Boolean);
+
+    if (answers.length !== 10) {
+      alert("Please enter exactly 10 answers.");
+      return;
+    }
+
+    const pool = role === "groom" ? participants.bride : participants.groom;
+    const vocab = [...new Set([...answers, ...pool.flatMap(p => p.answers)].flatMap(tokenize))];
+    const userVec = vectorize(answers, vocab);
+
+    let bestMatch = null;
+    let bestScore = -1;
+
+    for (const person of pool) {
+      const theirVec = vectorize(person.answers, vocab);
+      const score = cosineSimilarity(userVec, theirVec);
+      if (score > bestScore) {
+        bestScore = score;
+        bestMatch = person;
+      }
+    }
+
+    matchResultData = {
+      yourName: name,
+      yourRole: role === "groom" ? "Groomsman" : "Bridesmaid",
+      matchName: bestMatch.name,
+      matchRole: role === "groom" ? "Bridesmaid" : "Groomsman",
+      score: bestScore.toFixed(3)
+    };
+
+    document.getElementById("matchResult").style.display = "block";
+    document.getElementById("matchResult").innerHTML = `
+      💘 <strong>${matchResultData.yourName}</strong> (${matchResultData.yourRole}) is matched with
+      <strong>${matchResultData.matchName}</strong> (${matchResultData.matchRole})!
+      <br>Compatibility Score: <strong>${matchResultData.score}</strong>
+    `;
+
+    document.getElementById("exportBtn").style.display = "inline-block";
+  }
+
+  function exportPDF() {
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+
+    doc.setFontSize(18);
+    doc.text("💍 Wedding Match Result", 20, 30);
+
+    doc.setFontSize(14);
+    doc.text(`Your Name: ${matchResultData.yourName}`, 20, 50);
+    doc.text(`Your Role: ${matchResultData.yourRole}`, 20, 60);
+    doc.text(`Matched With: ${matchResultData.matchName}`, 20, 70);
+    doc.text(`Their Role: ${matchResultData.matchRole}`, 20, 80);
+    doc.text(`Compatibility Score: ${matchResultData.score}`, 20, 90);
+
+    doc.save("match_result.pdf");
+  }
+</script>
+
 </body>
 </html>
