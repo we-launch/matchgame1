@@ -105,4 +105,111 @@
       "Choose a snack:",
       "Favorite hobby:",
       "What type of music do you love?",
-      "Yo
+      "Your spirit animal:",
+      "Choose a drink:",
+      "Favorite social activity:",
+      "What’s your hangout style?"
+    ];
+
+    const options = [
+      ["Exploring a city", "Gaming", "Music fest", "Reading"],
+      ["Romantic", "Action", "Comedy", "Documentary"],
+      ["Beach", "Mountains", "Road trip", "Staycation"],
+      ["Chips", "Popcorn", "Chocolate", "Fruit"],
+      ["Cooking", "Drawing", "Dancing", "Hiking"],
+      ["Pop", "Rock", "EDM", "Jazz"],
+      ["Cat", "Dog", "Owl", "Sloth"],
+      ["Cocktail", "Beer", "Water", "Soda"],
+      ["Karaoke", "Board games", "Dancing", "Movie night"],
+      ["Chill vibes", "Big energy", "Deep convos", "Let’s play"]
+    ];
+
+    const matchProfiles = [
+      {
+        name: "Jessie",
+        nickname: "The Meme Queen",
+        answers: [2, 2, 0, 0, 2, 2, 0, 0, 2, 0],
+        description: "Master of gifs, lover of silly trivia nights and snack raids."
+      },
+      {
+        name: "Kyle",
+        nickname: "The Grillmaster Philosopher",
+        answers: [1, 1, 3, 0, 0, 1, 1, 1, 0, 1],
+        description: "Quotes Aristotle over burgers and loves deep talks at game night."
+      },
+      {
+        name: "Lena",
+        nickname: "The Casual DJ",
+        answers: [0, 0, 0, 2, 2, 0, 3, 2, 3, 3],
+        description: "Curates the vibe and picks the best playlists for any chill hangout."
+      },
+      {
+        name: "Rick",
+        nickname: "The Conspiracy Gamer",
+        answers: [1, 3, 1, 1, 3, 1, 2, 3, 1, 1],
+        description: "Debates alien life during Mario Kart and snack breaks."
+      }
+    ];
+
+    const questionsContainer = document.getElementById("questions");
+
+    questions.forEach((question, index) => {
+      const div = document.createElement("div");
+      div.className = "question";
+      div.innerHTML = `<strong>🧠 ${question}</strong><br />`;
+      options[index].forEach((opt, i) => {
+        div.innerHTML += `
+          <label>
+            <input type="radio" name="q${index}" value="${i}" required /> ${opt}
+          </label>`;
+      });
+      questionsContainer.appendChild(div);
+    });
+
+    document.getElementById("quizForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+
+      const userAnswers = [];
+      for (let i = 0; i < questions.length; i++) {
+        const answer = document.querySelector(`input[name='q${i}']:checked`);
+        userAnswers.push(parseInt(answer.value));
+      }
+
+      const bestMatch = findBestMatch(userAnswers);
+      showResult(bestMatch);
+    });
+
+    function cosineSimilarity(vecA, vecB) {
+      const dot = vecA.reduce((sum, val, i) => sum + val * vecB[i], 0);
+      const magA = Math.sqrt(vecA.reduce((sum, val) => sum + val * val, 0));
+      const magB = Math.sqrt(vecB.reduce((sum, val) => sum + val * val, 0));
+      return dot / (magA * magB);
+    }
+
+    function findBestMatch(userAnswers) {
+      let bestScore = -1;
+      let best = null;
+      matchProfiles.forEach(profile => {
+        const score = cosineSimilarity(userAnswers, profile.answers);
+        if (score > bestScore) {
+          bestScore = score;
+          best = profile;
+        }
+      });
+      return best;
+    }
+
+    function showResult(profile) {
+      const name = document.getElementById("userName").value;
+      document.getElementById("matchSound").play();
+      document.getElementById("result").innerHTML = `
+        <h2>👋 Hey ${name}!</h2>
+        <p>Your vibe-aligned teammate is:</p>
+        <h3>🎯 ${profile.name} - "${profile.nickname}"</h3>
+        <p>${profile.description}</p>
+        <button onclick="window.print()">📄 Save as PDF</button>
+      `;
+    }
+  </script>
+</body>
+</html>
